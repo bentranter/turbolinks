@@ -1,0 +1,12 @@
+name: turbolinks
+version: 0.1.0
+
+authors:
+  - Ben Tranter <ben@bentranter.io>
+
+description: |
+  Crystal engine for Turbolinks integration that extends `HTTP::Handler`.
+
+crystal: 0.24.1
+
+license: MIT
