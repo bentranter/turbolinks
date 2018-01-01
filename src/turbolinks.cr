@@ -12,20 +12,21 @@ module Turbolinks
   #
   # Use like you would use any HTTP middleware:
   #
-  #   ```
-  #   require "http/server"
-  #   require "turbolinks"
-  #  
-  #   HTTP::Server.new("127.0.0.1", 3000, [
-  #     Turbolinks::Handler.new,
-  #   ]).listen
-  #   ```
+  #     require "http/server"
+  #     require "turbolinks"
+  #     
+  #     HTTP::Server.new("127.0.0.1", 3000, [
+  #       Turbolinks::Handler.new,
+  #     ]).listen
+  #
   class Turbolinks::Handler
     include HTTP::Handler
 
     @@turbolinks_location = "_turbolinks_location"
 
-    # Executes the middleware.
+    # Executes the middleware. This function is called by the HTTP server
+    # after you've registered it as middleware, so you won't need to use this
+    # function directly.
     def call(context)
       return call_next context unless context.request.headers.get?("Turbolinks-Referrer")
 
@@ -58,12 +59,9 @@ module Turbolinks
       # Put the old headers back on the response.
       context.response.headers.merge!(headers)
 
-      # Add headers for the JavaScript response.
+      # TODO(ben) escape JS output!
       context.response.headers["Content-Type"] = "text/javascript"
       context.response.status_code = 200
-
-      # Write JavaScript response.
-      # TODO(ben) escape JS output!
       context.response.print "Turbolinks.clearCache();Turbolinks.visit('#{location}', {action: 'advance'});"
     end
 
