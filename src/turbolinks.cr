@@ -14,7 +14,7 @@ module Turbolinks
   #
   #     require "http/server"
   #     require "turbolinks"
-  #     
+  #
   #     HTTP::Server.new("127.0.0.1", 3000, [
   #       Turbolinks::Handler.new,
   #     ]).listen
