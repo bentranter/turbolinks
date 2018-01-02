@@ -28,7 +28,6 @@ describe Turbolinks::Handler do
     io.to_s.should eq("HTTP/1.1 200 OK\r\nContent-Length: 5\r\n\r\nHello")
   end
 
-  # HEY this actually doesn't work, which is nice.
   it "should set a cookie for redirects occuring during a GET request" do
     io = IO::Memory.new
     request = HTTP::Request.new("Get", "/")
