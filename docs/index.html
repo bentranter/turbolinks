@@ -54,10 +54,6 @@
   turbolinks:
     github: bentranter/turbolinks</code></pre>
 
-<h2>Warning</h2>
-
-<p>The <code>Location</code> header that is provided on a redirect after a form submit is used to set the value of  <code>location</code> in <code>Turbolinks.visit(location)</code>. This value is current <strong>not escaped</strong> and opens you up to JS injection -- please escape this value manually, or wait until a fix is pushed to this repo.</p>
-
 <h2>Usage</h2>
 
 <p>Turbolinks extends <code>HTTP::Handler</code>, so it can be used as HTTP middleware. You can use it with the standard library like so:</p>
@@ -82,6 +78,111 @@ get <span class="s">&quot;/&quot;</span>
 <span class="k">end</span>
 
 <span class="t">Kemal</span>.run</code></pre>
+
+<h2>A Note About Security</h2>
+
+<p>A common pattern if you're coming from the Rails world (and using something like <a href="https://github.com/rails/rails/tree/master/actionview/app/assets/javascripts" target="_blank">rails-ujs</a>) a common approach is to handle a <code>POST</code> request, and then redirect to another route. Turbolinks handles this case by intercepting the redirection after the <code>POST</code> request executes, and then responding with a JavaScript snippet to execute <code>Turbolinks.visit("#{location}")</code> for the location to redirect to.</p>
+
+<p>While this is typically safe, if your handler allows the user to input this <code>location</code>, you open yourself up to JavaScript injection. Lets look at two examples where a user is leaving a comment, submitted through a form <code>post</code> request.</p>
+
+<pre><code class='language-crystal'><span class="k">require</span> <span class="s">&quot;kemal&quot;</span>
+<span class="k">require</span> <span class="s">&quot;turbolinks&quot;</span>
+
+add_handler <span class="t">Turbolinks</span><span class="t">::</span><span class="t">Handler</span>.<span class="k">new</span>
+
+<span class="c"># Unsafe approach!</span>
+post <span class="s">&quot;/unsafe-comment&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+  title <span class="o">=</span> env.params.body[<span class="s">&quot;title&quot;</span>]
+  comment <span class="o">=</span> env.params.body[<span class="s">&quot;comment&quot;</span>]
+
+  <span class="c"># Imagine `new_comment` does something to handle a new commment, for</span>
+  <span class="c"># example&#39;s sake.</span>
+  new_comment(title, comment)
+
+  <span class="c"># This is dangerous because the value of `title` here could be anything --</span>
+  <span class="c"># including malicious JavaScript. Since the frontend will excute JavaScript</span>
+  <span class="c"># containing the value of this redirect here, any malicious JavaScript will</span>
+  <span class="c"># execute.</span>
+  env.redirect <span class="s">&quot;/comments/</span><span class="i">#{</span></span>title<span class="s"><span class="i">}</span>&quot;</span>
+<span class="k">end</span>
+
+<span class="c"># Safe approach.</span>
+post <span class="s">&quot;/safe-comment&quot;</span> <span class="k">do</span> <span class="o">|</span>env<span class="o">|</span>
+  title <span class="o">=</span> env.params.body[<span class="s">&quot;title&quot;</span>]
+  comment <span class="o">=</span> env.params.body[<span class="s">&quot;comment&quot;</span>]
+
+  <span class="c"># Imagine `new_comment` does something to handle a new commment, for</span>
+  <span class="c"># example&#39;s sake.</span>
+  comment_id <span class="o">=</span> new_comment(title, comment)
+
+  <span class="c"># This is safe because there&#39;s no way for the user submitted `title` or</span>
+  <span class="c"># `comment` to be available in the returned JavaScript -- you generate an</span>
+  <span class="c"># ID, and redirect to that route.</span>
+  env.redirect <span class="s">&quot;/comments/</span><span class="i">#{</span></span>comment_id<span class="s"><span class="i">}</span>&quot;</span>
+<span class="k">end</span>
+
+<span class="t">Kemal</span>.run</code></pre>
+
+<p>If you <em>must</em> do something like the unsafe approach, you'll need to sanitize the input yourself.</p>
+
+<h2>A Note For Non <code>rails-ujs</code> Users</h2>
+
+<p>In order for form submissions <em>not</em> to trigger a full page reload, you'll need to ensure that those submissions are submitted as AJAX requests. While a library like <a href="https://github.com/rails/rails/tree/master/actionview/app/assets/javascripts" target="_blank">Rails-UJS</a> or <a href="https://github.com/rails/jquery-ujs" target="_blank">JQuery-UJS</a> would handle this for you, it's straightforward to implement this yourself. The following JavaScript snippet adds bare-minimum support for AJAX form submissions that work with Turbolinks, but I encourage to look at what <code>rails-ujs</code> does as well.</p>
+
+<pre><code class='language-js'>(function() {
+  "use strict";
+  /*
+   * For Google Analytics, you need this:
+   * &lt;body>
+   * &lt;script>_gaq.push(['_trackPageview']);&lt;/script>
+   *  ...the rest of the body here...
+   * &lt;/body>
+   * See https://coderwall.com/p/ypzfdw/faster-page-loads-with-turbolinks for
+   * more info.
+   */
+
+   /*
+    * By default, Turbolinks submits forms normally. While this may feel
+    * frustrating as a consumer of the library, it makes sense:
+    *   - No specialized logic on the backend
+    *   - Cache is purged since the page refreshed.
+    */
+    document.addEventListener("DOMContentLoaded", function() {
+      /**
+       * submit sends an HTTP request via XHR.
+       * @param {*Object} formEl - the form element to submit via XHR.
+       */
+      function submit(formEl) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(formEl.method, formEl.action, true);
+
+        /* See
+         * https://github.com/rails/rails/blob/master/actionview/app/assets/javascripts/rails-ujs/utils/ajax.coffee
+         * for a more in-depth usage.
+         */
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var script = document.createElement("script");
+            script.innerText = xhr.responseText;
+            document.head.appendChild(script).parentNode.removeChild(script);
+          }
+        }
+        /* Set relevant headers that some backends check for */
+        xhr.setRequestHeader("Turbolinks-Referrer", window.location.href);
+        xhr.setRequestHeader("X-Requested-With", "xhr");
+        xhr.send(new FormData(formEl));
+        return false;
+      }
+
+      /* Intercept **any** submit event to submit via XHR instead. */
+      document.addEventListener("submit", function(e) {
+        e.preventDefault();
+        if (e.srcElement) {
+          submit(e.srcElement);
+        }
+      });
+    });
+})();</code></pre>
 
 <h2>Development</h2>
 
