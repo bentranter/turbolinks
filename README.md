@@ -1,6 +1,7 @@
 # Turbolinks
 
 [![Build Status](https://travis-ci.org/bentranter/turbolinks.svg?branch=master)](https://travis-ci.org/bentranter/turbolinks) [![License](https://img.shields.io/github/license/bentranter/turbolinks.svg)](https://github.com/bentranter/turbolinks/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/bentranter/turbolinks.svg)](https://github.com/bentranter/turbolinks/releases)
 
 Crystal engine for Turbolinks integration. Extends `HTTP::Handler`, so you can use it as middleware in any web application. Don't forget to grab the [frontend code for Turbolinks](https://github.com/turbolinks/turbolinks).
 
