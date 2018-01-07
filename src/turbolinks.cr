@@ -27,7 +27,7 @@ module Turbolinks
     # Executes the middleware. This function is called by the HTTP server
     # after you've registered it as middleware, so you won't need to use this
     # function directly.
-    def call(context)
+    def call(context : HTTP::Server::Context)
       return call_next context unless context.request.headers.get?("Turbolinks-Referrer")
 
       if context.request.method == "POST"
@@ -43,7 +43,7 @@ module Turbolinks
 
     # Handles the Turbolinks POST requets behaviour, specifically, it handles
     # the conditions that occur during a redirect after a POST request.
-    private def post(context)
+    private def post(context : HTTP::Server::Context)
       # Remove the location header, since we're no longer redirecting.
       return unless context.response.headers.get?("Location")
 
@@ -68,7 +68,7 @@ module Turbolinks
     # If the Turbolinks cookie is found, then redirect to the location specified
     # in the cookie via the `Turbolinks-Location` header that the Turbolinks
     # frontend will handle.
-    private def check_redirect(context)
+    private def check_redirect(context : HTTP::Server::Context)
       return unless context.request.cookies[@@turbolinks_location]?
 
       cookie = context.request.cookies[@@turbolinks_location]
