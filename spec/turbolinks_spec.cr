@@ -37,17 +37,13 @@ describe Turbolinks::Handler do
 
     handler = Turbolinks::Handler.new
     handler.next = Turbolinks::Handler::Proc.new do |ctx|
-      redirect_to ctx, "/"
+      redirect_to ctx, "/test"
     end
     handler.call(context)
     response.close
 
-    context.request.cookies.each do |cookie|
-      puts cookie
-    end
-
     location = context.response.cookies["_turbolinks_location"].value
-    location.should eq "/"
+    location.should eq "/test"
   end
 
   it "should redirect after a POST form submission" do

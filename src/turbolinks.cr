@@ -59,7 +59,6 @@ module Turbolinks
       # Put the old headers back on the response.
       context.response.headers.merge!(headers)
 
-      # TODO(ben) escape JS output!
       context.response.headers["Content-Type"] = "text/javascript"
       context.response.status_code = 200
       context.response.print "Turbolinks.clearCache();Turbolinks.visit('#{location}', {action: 'advance'});"
@@ -83,8 +82,8 @@ module Turbolinks
     private def get(context)
       return unless context.response.headers.get?("Location")
 
-      location = context.response.headers.get("Location").to_s
-      cookie = HTTP::Cookie.new(@@turbolinks_location, "/", http_only: true)
+      location = context.response.headers.get("Location")[0].to_s
+      cookie = HTTP::Cookie.new(@@turbolinks_location, location, http_only: true)
       context.response.cookies[@@turbolinks_location] = cookie
     end
   end
