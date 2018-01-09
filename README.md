@@ -114,6 +114,9 @@ In order for form submissions _not_ to trigger a full page reload, you'll need t
     * frustrating as a consumer of the library, it makes sense:
     *   - No specialized logic on the backend
     *   - Cache is purged since the page refreshed.
+    * However, that's not always what you want. By using the functionality
+    * below, forms are submitted via AJAX, as recommnded in the Turbolinks
+    * documentation.
     */
     document.addEventListener("DOMContentLoaded", function() {
       /**
