@@ -7,6 +7,6 @@ authors:
 description: |
   Crystal engine for Turbolinks integration that extends `HTTP::Handler`.
 
-crystal: 0.24.1
+crystal: 0.30.1
 
 license: MIT

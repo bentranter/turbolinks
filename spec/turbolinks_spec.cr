@@ -5,7 +5,7 @@ require "uri"
 def redirect_to(context, url)
   context.response.status_code = 302
 
-  url = URI.escape(url) { |b| URI.unreserved?(b) || b != '/' }
+  url = URI.encode(url)
   context.response.headers.add "Location", url
 end
 
@@ -18,7 +18,7 @@ describe Turbolinks::Handler do
     context = HTTP::Server::Context.new(request, response)
 
     handler = Turbolinks::Handler.new
-    handler.next = Turbolinks::Handler::Proc.new do |ctx|
+    handler.next = Turbolinks::Handler::HandlerProc.new do |ctx|
       ctx.response.print "Hello"
     end
     handler.call(context)
@@ -36,7 +36,7 @@ describe Turbolinks::Handler do
     context = HTTP::Server::Context.new(request, response)
 
     handler = Turbolinks::Handler.new
-    handler.next = Turbolinks::Handler::Proc.new do |ctx|
+    handler.next = Turbolinks::Handler::HandlerProc.new do |ctx|
       redirect_to ctx, "/test"
     end
     handler.call(context)
@@ -54,7 +54,7 @@ describe Turbolinks::Handler do
     context = HTTP::Server::Context.new(request, response)
 
     handler = Turbolinks::Handler.new
-    handler.next = Turbolinks::Handler::Proc.new do |ctx|
+    handler.next = Turbolinks::Handler::HandlerProc.new do |ctx|
       redirect_to ctx, "/"
     end
     handler.call(context)

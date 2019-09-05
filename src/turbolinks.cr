@@ -74,7 +74,7 @@ module Turbolinks
       context.response.headers["Turbolinks-Location"] = cookie.value
 
       # Update the cookie so it gets expired by the browser.
-      cookie.expires = Time.epoch(0)
+      cookie.expires = Time::UNIX_EPOCH
       context.response.cookies[@@turbolinks_location] = cookie
     end
 
