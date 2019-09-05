@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="generator" content="Crystal Docs 0.29.0">
+
+
+<link href="css/style.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="js/doc.js"></script>
+<script type="text/javascript">
+  CrystalDoc.base_path = "";
+</script>
+
   <meta id="repository-name" content="github.com/bentranter/turbolinks">
-  <link href="css/style.css" rel="stylesheet" type="text/css" />
-  <script type="text/javascript" src="js/doc.js"></script>
   <title>README - github.com/bentranter/turbolinks</title>
 </head>
 <body>
 
-<div id="types-list">
-  <div id="search-box">
-    <input type="search" id="search-input" placeholder="Search...">
+<div class="sidebar">
+  <div class="sidebar-header">
+    <div class="search-box">
+      <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
+    </div>
+
+    <div class="repository-links">
+      <a href="index.html">README</a>
+    </div>
   </div>
 
-  <ul>
-    <li class="current"><a href="index.html">README</a></li>
-  </ul>
+  <div class="search-results" class="hidden">
+    <ul class="search-list"></ul>
+  </div>
 
-  <ul>
+  <div class="types-list">
+    <ul>
   
   <li class="parent " data-id="github.com/bentranter/turbolinks/Turbolinks" data-name="turbolinks">
       <a href="Turbolinks.html">Turbolinks</a>
@@ -37,9 +53,11 @@
   
 </ul>
 
+  </div>
 </div>
 
-<div id="main-content">
+
+<div class="main-content">
 <h1>Turbolinks</h1>
 
 <p><a href="https://travis-ci.org/bentranter/turbolinks" target="_blank"><img src="https://travis-ci.org/bentranter/turbolinks.svg?branch=master" alt="Build Status"/></a> <a href="https://github.com/bentranter/turbolinks/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/bentranter/turbolinks.svg" alt="License"/></a>
@@ -51,7 +69,7 @@
 
 <p>Add this to your application's <code>shard.yml</code>:</p>
 
-<pre><code class='language-yaml'>dependencies:
+<pre><code class="language-yaml">dependencies:
   turbolinks:
     github: bentranter/turbolinks</code></pre>
 
@@ -59,7 +77,7 @@
 
 <p>Turbolinks extends <code>HTTP::Handler</code>, so it can be used as HTTP middleware. You can use it with the standard library like so:</p>
 
-<pre><code class='language-crystal'><span class="k">require</span> <span class="s">&quot;http/server&quot;</span>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;http/server&quot;</span>
 <span class="k">require</span> <span class="s">&quot;turbolinks&quot;</span>
 
 <span class="t">HTTP</span><span class="t">::</span><span class="t">Server</span>.<span class="k">new</span>(<span class="s">&quot;127.0.0.1&quot;</span>, <span class="n">3000</span>, [
@@ -68,7 +86,7 @@
 
 <p>or with a framework that supports standard HTTP middleware. For example, you can use Turbolinks with Kemal like so:</p>
 
-<pre><code class='language-crystal'><span class="k">require</span> <span class="s">&quot;kemal&quot;</span>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;kemal&quot;</span>
 <span class="k">require</span> <span class="s">&quot;turbolinks&quot;</span>
 
 <span class="c"># Calling `add_handler` is Kemal&#39;s way of registering HTTP middleware.</span>
@@ -86,7 +104,7 @@ get <span class="s">&quot;/&quot;</span>
 
 <p>While this is typically safe, if your handler allows the user to input this <code>location</code>, you open yourself up to JavaScript injection. Lets look at two examples where a user is leaving a comment, submitted through a form <code>post</code> request.</p>
 
-<pre><code class='language-crystal'><span class="k">require</span> <span class="s">&quot;kemal&quot;</span>
+<pre><code class="language-crystal"><span class="k">require</span> <span class="s">&quot;kemal&quot;</span>
 <span class="k">require</span> <span class="s">&quot;turbolinks&quot;</span>
 
 add_handler <span class="t">Turbolinks</span><span class="t">::</span><span class="t">Handler</span>.<span class="k">new</span>
@@ -104,7 +122,7 @@ post <span class="s">&quot;/unsafe-comment&quot;</span> <span class="k">do</span
   <span class="c"># including malicious JavaScript. Since the frontend will excute JavaScript</span>
   <span class="c"># containing the value of this redirect here, any malicious JavaScript will</span>
   <span class="c"># execute.</span>
-  env.redirect <span class="s">&quot;/comments/</span><span class="i">#{</span></span>title<span class="s"><span class="i">}</span>&quot;</span>
+  env.redirect <span class="s">&quot;/comments/</span><span class="i">#{</span>title<span class="i">}</span><span class="s">&quot;</span>
 <span class="k">end</span>
 
 <span class="c"># Safe approach.</span>
@@ -119,7 +137,7 @@ post <span class="s">&quot;/safe-comment&quot;</span> <span class="k">do</span> 
   <span class="c"># This is safe because there&#39;s no way for the user submitted `title` or</span>
   <span class="c"># `comment` to be available in the returned JavaScript -- you generate an</span>
   <span class="c"># ID, and redirect to that route.</span>
-  env.redirect <span class="s">&quot;/comments/</span><span class="i">#{</span></span>comment_id<span class="s"><span class="i">}</span>&quot;</span>
+  env.redirect <span class="s">&quot;/comments/</span><span class="i">#{</span>comment_id<span class="i">}</span><span class="s">&quot;</span>
 <span class="k">end</span>
 
 <span class="t">Kemal</span>.run</code></pre>
@@ -130,7 +148,7 @@ post <span class="s">&quot;/safe-comment&quot;</span> <span class="k">do</span> 
 
 <p>In order for form submissions <em>not</em> to trigger a full page reload, you'll need to ensure that those submissions are submitted as AJAX requests. While a library like <a href="https://github.com/rails/rails/tree/master/actionview/app/assets/javascripts" target="_blank">Rails-UJS</a> or <a href="https://github.com/rails/jquery-ujs" target="_blank">JQuery-UJS</a> would handle this for you, it's straightforward to implement this yourself. The following JavaScript snippet adds bare-minimum support for AJAX form submissions that work with Turbolinks, but I encourage to look at what <code>rails-ujs</code> does as well.</p>
 
-<pre><code class='language-js'>(function() {
+<pre><code class="language-js">(function() {
   "use strict";
   /*
    * For Google Analytics, you need this:
@@ -202,7 +220,7 @@ post <span class="s">&quot;/safe-comment&quot;</span> <span class="k">do</span> 
 
 <h2>License</h2>
 
-<p>The MIT License (MIT). Copyright (c) 2017-2018 Ben Tranter. See the <a href="/LICENSE" target="_blank">LICENSE</a> for more info.</p>
+<p>The MIT License (MIT). Copyright (c) 2017-2019 Ben Tranter. See the <a href="/LICENSE" target="_blank">LICENSE</a> for more info.</p>
 </div>
 </body>
 </html>
