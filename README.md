@@ -176,4 +176,4 @@ Turbolinks follows the typical Crystal project structure, so cloning the repo an
 
 ## License
 
-The MIT License (MIT). Copyright (c) 2017-2019 Ben Tranter. See the [LICENSE](/LICENSE) for more info.
+The MIT License (MIT). Copyright (c) 2017-2020 Ben Tranter. See the [LICENSE](/LICENSE) for more info.
