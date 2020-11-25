@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  example:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: MeilCli/setup-crystal-action@v4
+        with:
+          crystal_version: 0.35.1
+          shards_version: 0.11.1
+      - name: Lint
+        run: |
+          crystal tool format --check
+      - name: Test
+        run: |
+          crystal spec

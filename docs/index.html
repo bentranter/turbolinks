@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="generator" content="Crystal Docs 0.29.0">
+<meta name="generator" content="Crystal Docs 0.34.0">
+<meta name="crystal_docs.project_version" content="0.3.0">
+<meta name="crystal_docs.project_name" content="turbolinks">
 
 
-<link href="css/style.css" rel="stylesheet" type="text/css">
-
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="js/doc.js"></script>
-<script type="text/javascript">
-  CrystalDoc.base_path = "";
-</script>
 
-  <meta id="repository-name" content="github.com/bentranter/turbolinks">
-  <title>README - github.com/bentranter/turbolinks</title>
+<svg class="hidden">
+  <symbol id="octicon-link" viewBox="0 0 16 16">
+    <path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path>
+  </symbol>
+</svg>
+
+  <meta id="repository-name" content="turbolinks">
+  <title>turbolinks 0.3.0</title>
+  <script type="text/javascript">
+  CrystalDocs.base_path = "";
+  </script>
 </head>
 <body>
 
@@ -24,8 +31,16 @@
       <input type="search" class="search-input" placeholder="Search..." spellcheck="false" aria-label="Search">
     </div>
 
-    <div class="repository-links">
-      <a href="index.html">README</a>
+    <div class="project-summary">
+      <h1 class="project-name">
+        <a href="index.html">
+          turbolinks
+        </a>
+      </h1>
+
+      <span class="project-version">
+        0.3.0
+      </span>
     </div>
   </div>
 
@@ -36,12 +51,12 @@
   <div class="types-list">
     <ul>
   
-  <li class="parent " data-id="github.com/bentranter/turbolinks/Turbolinks" data-name="turbolinks">
+  <li class="parent " data-id="turbolinks/Turbolinks" data-name="turbolinks">
       <a href="Turbolinks.html">Turbolinks</a>
       
         <ul>
   
-  <li class=" " data-id="github.com/bentranter/turbolinks/Turbolinks/Handler" data-name="turbolinks::handler">
+  <li class=" " data-id="turbolinks/Turbolinks/Handler" data-name="turbolinks::handler">
       <a href="Turbolinks/Handler.html">Handler</a>
       
     </li>
@@ -58,14 +73,22 @@
 
 
 <div class="main-content">
-<h1>Turbolinks</h1>
+<h1><a id="turbolinks" class="anchor" href="#turbolinks">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Turbolinks</h1>
 
 <p><a href="https://travis-ci.org/bentranter/turbolinks" target="_blank"><img src="https://travis-ci.org/bentranter/turbolinks.svg?branch=master" alt="Build Status"/></a> <a href="https://github.com/bentranter/turbolinks/blob/master/LICENSE" target="_blank"><img src="https://img.shields.io/github/license/bentranter/turbolinks.svg" alt="License"/></a>
 <a href="https://github.com/bentranter/turbolinks/releases" target="_blank"><img src="https://img.shields.io/github/release/bentranter/turbolinks.svg" alt="GitHub release"/></a></p>
 
 <p>Crystal engine for Turbolinks integration. Extends <code>HTTP::Handler</code>, so you can use it as middleware in any web application. Don't forget to grab the <a href="https://github.com/turbolinks/turbolinks" target="_blank">frontend code for Turbolinks</a>.</p>
 
-<h2>Installation</h2>
+<h2><a id="installation" class="anchor" href="#installation">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Installation</h2>
 
 <p>Add this to your application's <code>shard.yml</code>:</p>
 
@@ -73,7 +96,11 @@
   turbolinks:
     github: bentranter/turbolinks</code></pre>
 
-<h2>Usage</h2>
+<h2><a id="usage" class="anchor" href="#usage">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Usage</h2>
 
 <p>Turbolinks extends <code>HTTP::Handler</code>, so it can be used as HTTP middleware. You can use it with the standard library like so:</p>
 
@@ -98,7 +125,11 @@ get <span class="s">&quot;/&quot;</span>
 
 <span class="t">Kemal</span>.run</code></pre>
 
-<h2>A Note About Security</h2>
+<h2><a id="a-note-about-security" class="anchor" href="#a-note-about-security">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>A Note About Security</h2>
 
 <p>A common pattern if you're coming from the Rails world (and using something like <a href="https://github.com/rails/rails/tree/master/actionview/app/assets/javascripts" target="_blank">rails-ujs</a>) a common approach is to handle a <code>POST</code> request, and then redirect to another route. Turbolinks handles this case by intercepting the redirection after the <code>POST</code> request executes, and then responding with a JavaScript snippet to execute <code>Turbolinks.visit("#{location}")</code> for the location to redirect to.</p>
 
@@ -144,7 +175,11 @@ post <span class="s">&quot;/safe-comment&quot;</span> <span class="k">do</span> 
 
 <p>If you <em>must</em> do something like the unsafe approach, you'll need to sanitize the input yourself.</p>
 
-<h2>A Note For Non <code>rails-ujs</code> Users</h2>
+<h2><a id="a-note-for-non-rails-ujs-users" class="anchor" href="#a-note-for-non-rails-ujs-users">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>A Note For Non <code>rails-ujs</code> Users</h2>
 
 <p>In order for form submissions <em>not</em> to trigger a full page reload, you'll need to ensure that those submissions are submitted as AJAX requests. While a library like <a href="https://github.com/rails/rails/tree/master/actionview/app/assets/javascripts" target="_blank">Rails-UJS</a> or <a href="https://github.com/rails/jquery-ujs" target="_blank">JQuery-UJS</a> would handle this for you, it's straightforward to implement this yourself. The following JavaScript snippet adds bare-minimum support for AJAX form submissions that work with Turbolinks, but I encourage to look at what <code>rails-ujs</code> does as well.</p>
 
@@ -206,21 +241,37 @@ post <span class="s">&quot;/safe-comment&quot;</span> <span class="k">do</span> 
     });
 })();</code></pre>
 
-<h2>Development</h2>
+<h2><a id="development" class="anchor" href="#development">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Development</h2>
 
 <p>Turbolinks follows the typical Crystal project structure, so cloning the repo and making changes is all you need to do. However, you're encouraged to run this backend alongside the Turbolinks frontend to make sure it works as expected, especially when compared to the Rails backend. The Turbolinks frontend is available at <a href="https://github.com/turbolinks/turbolinks" target="_blank">github.com/turbolinks/turbolinks</a>, and the Rails gem is available at <a href="https://github.com/turbolinks/turbolinks-rails" target="_blank">github.com/turbolinks/turbolinks-rails</a>.</p>
 
-<h2>Contributing</h2>
+<h2><a id="contributing" class="anchor" href="#contributing">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributing</h2>
 
 <ol><li>Fork it ( https://github.com/[your-github-name]/turbolinks/fork )</li><li>Create your feature branch (git checkout -b my-new-feature)</li><li>Make sure the tests pass, adding any necessary new tests</li><li>Format your code with <code>crystal tool format</code></li><li>Commit your changes (git commit -am 'Add some feature')</li><li>Push to the branch (git push origin my-new-feature)</li><li>Create a new Pull Request</li></ol>
 
-<h2>Contributors</h2>
+<h2><a id="contributors" class="anchor" href="#contributors">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>Contributors</h2>
 
 <ul><li><a href="https://github.com/bentranter" target="_blank">bentranter</a> Ben Tranter - creator, maintainer</li></ul>
 
-<h2>License</h2>
+<h2><a id="license" class="anchor" href="#license">
+  <svg class="octicon-link" aria-hidden="true">
+    <use href="#octicon-link"/>
+  </svg>
+</a>License</h2>
 
-<p>The MIT License (MIT). Copyright (c) 2017-2019 Ben Tranter. See the <a href="/LICENSE" target="_blank">LICENSE</a> for more info.</p>
+<p>The MIT License (MIT). Copyright (c) 2017-2020 Ben Tranter. See the <a href="/LICENSE" target="_blank">LICENSE</a> for more info.</p>
 </div>
 </body>
 </html>
